@@ -42,7 +42,7 @@
                   };
                   "@swap" = {
                     mountpoint = "/.swapvol";
-                    swap.swapfile.size = "8G"; # ≥ объём RAM для гибернации
+                    swap.swapfile.size = "8G";
                     swap.swapfile.path = "swapfile";
                     mountOptions = [ "noatime" "nodatacow" "nodatasum" "compress=no" ];
                   };
