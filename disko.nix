@@ -9,7 +9,7 @@
           partitions = {
             ESP = {
               type = "EF00";
-              size = "512M";
+              size = "1G";
               content = {
                 type = "filesystem";
                 format = "vfat";
@@ -39,12 +39,6 @@
                   "@log" = {
                     mountpoint = "/var/log";
                     mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "@swap" = {
-                    mountpoint = "/.swapvol";
-                    swap.swapfile.size = "8G";
-                    swap.swapfile.path = "swapfile";
-                    mountOptions = [ "noatime" "nodatacow" "nodatasum" "compress=no" ];
                   };
                 };
               };
