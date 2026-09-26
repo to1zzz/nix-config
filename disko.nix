@@ -1,15 +1,15 @@
 {
   disko.devices = {
     disk = {
-      my-disk = {
+      main = {
         device = "/dev/sdb";
         type = "disk";
         content = {
           type = "gpt";
           partitions = {
             ESP = {
-              type = "EF00";
               size = "1G";
+              type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
@@ -18,27 +18,34 @@
               };
             };
 
-            root = {
+            luks = {
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-                subvolumes = {
-                  "@" = {
-                    mountpoint = "/";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "@home" = {
-                    mountpoint = "/home";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "@nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "@log" = {
-                    mountpoint = "/var/log";
-                    mountOptions = [ "compress=zstd" "noatime" ];
+                type = "luks";
+                name = "crypted";
+                settings = {
+                  allowDiscards = true; 
+                };
+                content = {
+                  type = "btrfs";
+                  extraArgs = [ "-f" ];
+                  subvolumes = {
+                    "@" = {
+                      mountpoint = "/";
+                      mountOptions = [ "compress=zstd:1" "noatime" "ssd" "discard=async" ];
+                    };
+                    "@home" = {
+                      mountpoint = "/home";
+                      mountOptions = [ "compress=zstd:1" "noatime" "ssd" "discard=async" ];
+                    };
+                    "@nix" = {
+                      mountpoint = "/nix";
+                      mountOptions = [ "compress=zstd:1" "noatime" "ssd" "discard=async" ];
+                    };
+                    "@log" = {
+                      mountpoint = "/var/log";
+                      mountOptions = [ "compress=zstd:1" "noatime" "ssd" "discard=async" ];
+                    };
                   };
                 };
               };
